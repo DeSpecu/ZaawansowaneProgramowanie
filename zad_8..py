@@ -1,4 +1,6 @@
+from typing import List, Optional
 import requests
+import argparse
 
 class Brewery:
     def __init__(self,id,name, brewery_type, address_1, address_2,address_3, city, state_province,
@@ -30,16 +32,29 @@ class Brewery:
             f"State: {self.state}\n"
             f"Postal Code: {self.postal_code}\n"
             f"Country: {self.country}\n"
-            f"Longitude: {self.longitude}\n"
+            f"Longitude: {self.longtitude}\n"
             f"Latitude: {self.latitude}\n"
             f"Phone: {self.phone}\n"
             f"Website: {self.website_url}\n"
             )
     
+    def fetch_breweries(city: Optional[str] = None):
+        url = "https://api.openbrewerydb.org/breweries"
+        params = {"per_page": 20}
+        if city:
+            params["by_city"] = city
 
-url = "https://api.openbrewerydb.org/v1/breweries?per_page=20"
+        response = requests.get(url, params=params)
+        response.raise_for_status()
 
-odpowiedz = requests.get(url)
+        return response
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--city", type=str, help="Killeshin", required=False)
+args = parser.parse_args()
+
+odpowiedz = Brewery.fetch_breweries(city=args.city)
 
 if odpowiedz.status_code == 200:
     dane = odpowiedz.json()
