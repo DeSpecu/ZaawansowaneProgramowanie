@@ -1,5 +1,3 @@
-import json
-
 import requests
 
 class Brewery:
@@ -22,15 +20,30 @@ class Brewery:
         self.street = street
         self.state = state
 
+    def __str__(self):
+        return (
+            f"Brewery ID: {self.id}\n"
+            f"Name: {self.name}\n"
+            f"Type: {self.brewery_type}\n"
+            f"Street: {self.street}\n"
+            f"City: {self.city}\n"
+            f"State: {self.state}\n"
+            f"Postal Code: {self.postal_code}\n"
+            f"Country: {self.country}\n"
+            f"Longitude: {self.longitude}\n"
+            f"Latitude: {self.latitude}\n"
+            f"Phone: {self.phone}\n"
+            f"Website: {self.website_url}\n"
+            )
+    
 
 url = "https://api.openbrewerydb.org/v1/breweries?per_page=20"
 
 odpowiedz = requests.get(url)
+
 if odpowiedz.status_code == 200:
     dane = odpowiedz.json()
+    for browar in dane:
+        print(str(browar)+"\n")
 else:
     print("Błąd")
-
-browary: dict[str, Brewery] = dane
-
-print(browary)
