@@ -1,5 +1,4 @@
 import csv
-import time
 import uuid
 
 def create_task():
