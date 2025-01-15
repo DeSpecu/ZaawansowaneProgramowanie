@@ -1,15 +1,30 @@
-import cv2
-import pytesseract
-import yaml
+from flask import Flask
+from flask_restful import Resource, Api
 
-def Czytaj(sciezka):
-    with open('config.yaml') as file:
-        config = yaml.safe_load(file)
+class Movie(Resource):
 
-    img = cv2.imread(sciezka)
+   def get(self):
+       y = []
+       r = open("movies.txt")
+       for x in r:
+           splitted = x.split(',')
+           self.id = splitted[0].replace('\n','')
+           self.title = splitted[1].replace('\n','')
+           self.genres = splitted[2].replace('\n','')
+           y.append({'id': self.id, 'title': self.title, 'genres': self.genres})
 
-    pytesseract.pytesseract.tesseract_cmd = config["paths"]["tesseract_path"]
+       return y
 
-    print(pytesseract.image_to_string(img))
 
-Czytaj(r"C:\Users\szymk\Desktop\OIP.jpg")
+app = Flask(__name__)
+api = Api(app)
+
+class HelloWorld(Resource):
+   def get(self):
+       return {'hello': 'world'}
+
+api.add_resource(HelloWorld, '/')
+api.add_resource(Movie, '/movies')
+
+if __name__ == '__main__':
+   app.run(debug=True)
