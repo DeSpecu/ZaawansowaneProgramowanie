@@ -1,19 +1,14 @@
 import cv2
-import cv2
-import configparser
+import numpy as np
 
-config = configparser.ConfigParser()
-try:
-    config.read('config.ini')
-except configparser.Error as e:
-    print(f"Błąd podczas wczytywania pliku konfiguracyjnego: {e}")
-    exit()
+image = np.zeros((400, 400, 3), dtype=np.uint8)
+center = (200, 200)
 
-path = config['Paths']['image_path']
+for i in range(20, 121, 20):
+    top_left = (center[0] - i//2, center[1] - i//2)
+    bottom_right = (center[0] + i//2, center[1] + i//2)
+    cv2.rectangle(image, top_left, bottom_right, (255, 255, 0), 1)
 
-image = cv2.imread(path)
-image_gray = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
-cv2.imshow("Obraz", image)
-cv2.imshow("Obraz w skali szarości", image_gray)
+cv2.imshow("Kwadraty", image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

@@ -1,16 +1,11 @@
 import cv2
-import cv2
-import configparser
+import numpy as np
 
-config = configparser.ConfigParser()
-try:
-    config.read('config.ini')
-except configparser.Error as e:
-    print(f"Błąd podczas wczytywania pliku konfiguracyjnego: {e}")
-    exit()
+image = np.zeros((300, 300, 3), dtype=np.uint8)
 
-path = config['Paths']['image_path']
+cv2.circle(image, (40, 40), 40, (255, 0, 0), -1)
+cv2.circle(image, (150, 150), 60, (0, 0, 255), -1)
 
-image_gray = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
-(h, w) = image_gray.shape[:2]
-print(f"Liczba kanałów: 1")
+cv2.imshow("Okręgi", image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()

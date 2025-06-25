@@ -1,16 +1,16 @@
 import cv2
-import cv2
-import configparser
+import numpy as np
 
-config = configparser.ConfigParser()
-try:
-    config.read('config.ini')
-except configparser.Error as e:
-    print(f"Błąd podczas wczytywania pliku konfiguracyjnego: {e}")
-    exit()
+image = np.zeros((300, 300, 3), dtype=np.uint8)
 
-path = config['Paths']['image_path']
+center = (150, 150)
 
-image_gray = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+top_left = (center[0] - 50, center[1] - 50)
+bottom_right = (center[0] + 50, center[1] + 50)
 
-cv2.imwrite(r"C:\Users\szymk\Downloads\pingwin_gray.png", image_gray)
+cv2.rectangle(image, top_left, bottom_right, (0, 255, 0), 2)
+cv2.circle(image, center, 30, (255, 0, 0), 2)
+
+cv2.imshow("Kwadrat z okręgiem", image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
