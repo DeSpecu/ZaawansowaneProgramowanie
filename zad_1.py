@@ -1,6 +1,5 @@
 import cv2
 import configparser
-import numpy as np
 
 config = configparser.ConfigParser()
 try:
@@ -12,12 +11,13 @@ except configparser.Error as e:
 path = config['Paths']['image_path']
 image = cv2.imread(path)
 
-height, width, _ = image.shape
+h, w, _ = image.shape
+center = (w // 2, h // 2)
 
-M = np.float32([[1, 0, 30], [0, 1, 40]])
-shifted = cv2.warpAffine(image, M, (width, height))
+M = cv2.getRotationMatrix2D(center, 45, 1.0)
+rotated = cv2.warpAffine(image, M, (w, h))
 
 cv2.imshow("Oryginalny", image)
-cv2.imshow("Przesunity", shifted)
+cv2.imshow("Obrocony", rotated)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

@@ -1,6 +1,6 @@
 import cv2
 import configparser
-from imutils import rotate_bound
+from imutils import rotate
 
 config = configparser.ConfigParser()
 try:
@@ -10,11 +10,10 @@ except configparser.Error as e:
     exit()
 
 path = config['Paths']['image_path']
-
 image = cv2.imread(path)
+h, w, _ = image.shape
+center = (w // 2, h // 2)
 
-rotated = rotate_bound(image, -33)
-
-cv2.imshow("Obrócony", rotated)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+M = cv2.getRotationMatrix2D(center, 75, 1.0)
+rotated = cv2.warpAffine(image, M, (w, h))
+cv2.imwrite("rotated.jpg", rotated)
