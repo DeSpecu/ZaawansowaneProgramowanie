@@ -1,6 +1,6 @@
 import cv2
 import configparser
-from imutils import resize
+import numpy as np
 
 config = configparser.ConfigParser()
 try:
@@ -12,7 +12,13 @@ except configparser.Error as e:
 path = config['Paths']['image_path']
 image = cv2.imread(path)
 
-resized = resize(image, width=500)
-cv2.imshow("Szerokosc", resized)
+height, width, _ = image.shape
+right_half = image[:, width//2:]
+flipped_part = cv2.flip(right_half, 1)
+
+img_copy = image.copy()
+img_copy[:, width//2:] = flipped_part
+
+cv2.imshow("Częściowo odbity obraz", img_copy)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

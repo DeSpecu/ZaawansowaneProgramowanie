@@ -10,8 +10,8 @@ except configparser.Error as e:
 
 path = config['Paths']['image_path']
 image = cv2.imread(path)
-resized = cv2.resize(image, (200, 300))
+flipped= cv2.flip(image, -1)
 
-cv2.imshow("200x300", resized)
+cv2.imshow("Odbicie", flipped)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

@@ -11,8 +11,9 @@ except configparser.Error as e:
 path = config['Paths']['image_path']
 image = cv2.imread(path)
 
-bigger = cv2.resize(image, None, fx=2.0, fy=2.0, interpolation=cv2.INTER_LINEAR)
+flipped = cv2.flip(image, 0)
 
-cv2.imshow("Powiekszony", bigger)
+cv2.imshow("Oryginalny", image)
+cv2.imshow("Odbicie", flipped)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

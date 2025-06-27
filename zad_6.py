@@ -13,8 +13,13 @@ path = config['Paths']['image_path']
 
 image = cv2.imread(path)
 
-resized = resize(image, height=400)
+flip_type = int(input("Wybierz typ odbicia (0=pionowe, 1=poziome, -1=obie osie): "))
 
-cv2.imshow("Wysokosc 400", resized)
+if flip_type in [-1, 0, 1]:
+    flipped = cv2.flip(image, flip_type)
+    cv2.imshow("Wynik odbicia", flipped)
+else:
+    print("Nieprawidłowy wybór.")
+
 cv2.waitKey(0)
 cv2.destroyAllWindows()

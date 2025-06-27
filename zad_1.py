@@ -1,6 +1,5 @@
 import cv2
 import configparser
-from imutils import rotate
 
 config = configparser.ConfigParser()
 try:
@@ -11,8 +10,9 @@ except configparser.Error as e:
 
 path = config['Paths']['image_path']
 image = cv2.imread(path)
-half = cv2.resize(image, (image.shape[1]//2, image.shape[0]//2))
 
-cv2.imshow("Pomniejszony", half)
+flipped = cv2.flip(image, 1)
+
+cv2.imshow("Odbicie", flipped)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

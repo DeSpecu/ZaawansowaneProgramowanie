@@ -11,16 +11,14 @@ except configparser.Error as e:
 path = config['Paths']['image_path']
 image = cv2.imread(path)
 
-methods = {
-    "NEAREST": cv2.INTER_NEAREST,
-    "LINEAR": cv2.INTER_LINEAR,
-    "CUBIC": cv2.INTER_CUBIC,
-    "LANCZOS4": cv2.INTER_LANCZOS4
-}
+flipped_h = cv2.flip(image, 1)
+flipped_v = cv2.flip(image, 0)
+flipped_both = cv2.flip(image, -1)
 
-for name, method in methods.items():
-    upscaled = cv2.resize(image, None, fx=3, fy=3, interpolation=method)
-    cv2.imshow(name, upscaled)
+cv2.imshow("Oryginał", image)
+cv2.imshow("Poziome", flipped_h)
+cv2.imshow("Pionowe", flipped_v)
+cv2.imshow("Obie osie", flipped_both)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
