@@ -12,7 +12,9 @@ path = config['Paths']['image_path']
 
 image = cv2.imread(path)
 
-roi = image[0:100, 0:100]
+fragment = image[50:150, 50:150] 
+image[200:300, 200:300] = fragment 
 
-cv2.imshow("100x100", roi)
+cv2.imshow("Po wklejeniu", image)
 cv2.waitKey(0)
+cv2.destroyAllWindows()

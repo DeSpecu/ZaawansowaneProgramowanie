@@ -1,7 +1,18 @@
 import cv2
-image = cv2.imread("mem.jpg")
+import configparser
 
-h,w,c = image.shape
+config = configparser.ConfigParser()
+try:
+    config.read('config.ini')
+except configparser.Error as e:
+    print(f"Błąd podczas wczytywania pliku konfiguracyjnego: {e}")
+    exit()
+
+path = config['Paths']['image_path']
+
+image = cv2.imread(path)
+
+h, w, _ = image.shape
 
 roi = image[h//2:, 0:]
 

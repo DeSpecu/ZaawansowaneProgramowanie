@@ -12,7 +12,11 @@ path = config['Paths']['image_path']
 
 image = cv2.imread(path)
 
-roi = image[0:100, 0:100]
+h,w,c = image.shape
 
-cv2.imshow("100x100", roi)
+cropped = image[0:300, 0:300]
+cv2.imwrite("cropped.jpg", cropped)
+
+cv2.imshow("Przyciety", cropped)
 cv2.waitKey(0)
+cv2.destroyAllWindows()
