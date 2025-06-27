@@ -1,16 +1,20 @@
 import cv2
-import numpy as np
+import configparser
+from imutils import translate
 
-image = np.zeros((300, 300, 3), dtype=np.uint8)
+config = configparser.ConfigParser()
+try:
+    config.read('config.ini')
+except configparser.Error as e:
+    print(f"Błąd podczas wczytywania pliku konfiguracyjnego: {e}")
+    exit()
 
-center = (150, 150)
+path = config['Paths']['image_path']
+image = cv2.imread(path)
+height, width, _ = image.shape
 
-top_left = (center[0] - 50, center[1] - 50)
-bottom_right = (center[0] + 50, center[1] + 50)
+shifted = translate(image, 100, 50)
 
-cv2.rectangle(image, top_left, bottom_right, (0, 255, 0), 2)
-cv2.circle(image, center, 30, (255, 0, 0), 2)
-
-cv2.imshow("Kwadrat z okręgiem", image)
+cv2.imshow("Przesuniete", shifted)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

@@ -1,12 +1,21 @@
 import cv2
-import numpy as np
 import configparser
+import numpy as np
 
-image = np.zeros((400, 400, 3), dtype=np.uint8)
+config = configparser.ConfigParser()
+try:
+    config.read('config.ini')
+except configparser.Error as e:
+    print(f"Błąd podczas wczytywania pliku konfiguracyjnego: {e}")
+    exit()
 
-cv2.rectangle(image, (0, 0), (100, 50), (0, 255, 0), -1)
-cv2.rectangle(image, (300, 350), (399, 399), (0, 0, 255), 3)
+path = config['Paths']['image_path']
+image = cv2.imread(path)
+height, width, _ = image.shape
 
-cv2.imshow("Prostokąty", image)
+M = np.float32([[1, 0, -20], [0, 1, -50]])
+shifted = cv2.warpAffine(image, M, (width, height))
+
+cv2.imshow("Przesuniete", shifted)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

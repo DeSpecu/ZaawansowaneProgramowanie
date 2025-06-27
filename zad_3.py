@@ -1,11 +1,21 @@
 import cv2
+import configparser
 import numpy as np
 
-image = np.zeros((300, 300, 3), dtype=np.uint8)
+config = configparser.ConfigParser()
+try:
+    config.read('config.ini')
+except configparser.Error as e:
+    print(f"Błąd podczas wczytywania pliku konfiguracyjnego: {e}")
+    exit()
 
-cv2.circle(image, (40, 40), 40, (255, 0, 0), -1)
-cv2.circle(image, (150, 150), 60, (0, 0, 255), -1)
+path = config['Paths']['image_path']
+image = cv2.imread(path)
+height, width, _ = image.shape
 
-cv2.imshow("Okręgi", image)
+M = np.float32([[1, 0, width // 2 + 50], [0, 1, height // 2 + 50]])
+shifted = cv2.warpAffine(image, M, (width, height))
+
+cv2.imshow("Przesuniete", shifted)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

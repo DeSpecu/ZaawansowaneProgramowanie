@@ -1,14 +1,24 @@
 import cv2
+import configparser
 import numpy as np
 
-image = np.zeros((400, 400, 3), dtype=np.uint8)
-center = (200, 200)
+config = configparser.ConfigParser()
+try:
+    config.read('config.ini')
+except configparser.Error as e:
+    print(f"Błąd podczas wczytywania pliku konfiguracyjnego: {e}")
+    exit()
 
-for i in range(20, 121, 20):
-    top_left = (center[0] - i//2, center[1] - i//2)
-    bottom_right = (center[0] + i//2, center[1] + i//2)
-    cv2.rectangle(image, top_left, bottom_right, (255, 255, 0), 1)
+path = config['Paths']['image_path']
+image = cv2.imread(path)
+height, width, _ = image.shape
 
-cv2.imshow("Kwadraty", image)
+tx = int(input("Podaj przesunięcie w poziomie: "))
+ty = int(input("Podaj przesunięcie w pionie: "))
+
+M = np.float32([[1, 0, tx], [0, 1, ty]])
+shifted = cv2.warpAffine(image, M, (width, height))
+
+cv2.imshow("Przesuniete", shifted)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
