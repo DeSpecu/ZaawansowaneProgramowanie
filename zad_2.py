@@ -10,14 +10,18 @@ except configparser.Error as e:
     exit()
 
 path = config['Paths']['image_path']
+path2 = config['Paths']['image_path2']
 
 image = cv2.imread(path)
+image2 = cv2.imread(path2)
 
-numpy_burned = image + 150
+img1 = cv2.resize(image, (300, 300))
+img2 = cv2.resize(image2, (300, 300))
 
-opencv_burned = cv2.add(image, 150 * np.ones(image.shape, dtype='uint8'))
+diff = cv2.bitwise_xor(img1, img2)
 
-cv2.imshow("NumPy", numpy_burned)
-cv2.imshow("OpenCV", opencv_burned)
+cv2.imshow("Obraz 1", img1)
+cv2.imshow("Obraz 2", img2)
+cv2.imshow("Roznice", diff)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

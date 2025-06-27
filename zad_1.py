@@ -1,24 +1,25 @@
 import cv2
-import configparser
 import numpy as np
 
-config = configparser.ConfigParser()
-try:
-    config.read('config.ini')
-except configparser.Error as e:
-    print(f"Błąd podczas wczytywania pliku konfiguracyjnego: {e}")
-    exit()
+trojkkat = np.zeros((300, 300), dtype="uint8")
+okrag = np.zeros((300, 300), dtype="uint8")
 
-path = config['Paths']['image_path']
+pts = np.array([[50, 250], [150, 50], [250, 250]], np.int32)
+pts = pts.reshape((-1, 1, 2))
+cv2.fillPoly(trojkkat, [pts], 255)
 
-image = cv2.imread(path)
+cv2.circle(okrag, (150, 150), 100, 255, -1)
 
-numpy_added = image + 50
+and_example = cv2.bitwise_and(trojkkat, okrag)
+or_example = cv2.bitwise_or(trojkkat, okrag)
+xor_example = cv2.bitwise_xor(trojkkat, okrag)
+not_example = cv2.bitwise_not(trojkkat)
 
-opencv_added = cv2.add(image, 50 * np.ones(image.shape, dtype='uint8'))
-
-cv2.imshow("Oryginalny", image)
-cv2.imshow("NumPy", numpy_added)
-cv2.imshow("OpenCV", opencv_added)
+cv2.imshow("Trojkat", trojkkat)
+cv2.imshow("Okrag", okrag)
+cv2.imshow("AND", and_example)
+cv2.imshow("OR", or_example)
+cv2.imshow("XOR", xor_example)
+cv2.imshow("NOT Trojkat", not_example)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
