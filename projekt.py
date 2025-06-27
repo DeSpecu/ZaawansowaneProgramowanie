@@ -6,8 +6,8 @@ from fast_alpr import ALPR
 import yolov5
 from fast_alpr.alpr import ALPR
 
-SCIEZKA_ZDJECIA = r"Ścieżka do ustawienia"
-XML_POPRAWNE_SCIEZKA = r"Śceiżka do ustawienia"
+SCIEZKA_ZDJECIA = r"/Users/szymon/Downloads/archive/photos"
+XML_POPRAWNE_SCIEZKA = r"/Users/szymon/Downloads/archive/annotations.xml"
 model = yolov5.load('keremberke/yolov5n-license-plate')
     
 alpr = ALPR(
@@ -20,6 +20,7 @@ def znajdz_tablice(sciezka):
 
     tablica = model(obraz)
     odczyty = tablica.pred[0]
+    print(odczyty)
     max_obszar = 0
     najlepszy_kandydat = None
     if odczyty.shape[0] > 0:
@@ -55,6 +56,7 @@ def ocr(obraz):
     
 def process_image(obraz):
     nazwa = os.fsdecode(obraz)
+    #print(f'Przetwarzanie {nazwa}')
     obraz = cv2.imread(os.path.join(f'{SCIEZKA_ZDJECIA}/plates', nazwa))
     tablica = ocr(obraz)
     return (nazwa, tablica)
