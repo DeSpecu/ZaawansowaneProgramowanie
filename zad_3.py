@@ -1,5 +1,6 @@
 import cv2
 import configparser
+import numpy as np
 
 config = configparser.ConfigParser()
 try:
@@ -12,9 +13,11 @@ path = config['Paths']['image_path']
 
 image = cv2.imread(path)
 
-h,w,c = image.shape
+numpy_dark = image - 80
 
-roi = image[0:, w//2:]
+opencv_dark = cv2.subtract(image, 80 * np.ones(image.shape, dtype='uint8'))
 
-cv2.imshow("Połowa", roi)
+cv2.imshow("NumPy", numpy_dark)
+cv2.imshow("OpenCV", opencv_dark)
 cv2.waitKey(0)
+cv2.destroyAllWindows()

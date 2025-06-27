@@ -12,12 +12,14 @@ path = config['Paths']['image_path']
 
 image = cv2.imread(path)
 
-xStart = input("Podaj startowe X: ")
-xEnd = input("Podaj końcowe X: ")
-yStart = input("Podaj startowe Y: ")
-yEnd = input("Podaj końcowe Y: ")
+B, G, R = cv2.split(image)
 
-roi = image[int(yStart):int(yEnd), int(xStart):int(xEnd)]
+R = cv2.add(R, 30)
+G = cv2.subtract(G, 20)
+B = cv2.add(B, 10)
 
-cv2.imshow("User", roi)
+filtered = cv2.merge([B, G, R])
+
+cv2.imshow("Instagram", filtered)
 cv2.waitKey(0)
+cv2.destroyAllWindows()

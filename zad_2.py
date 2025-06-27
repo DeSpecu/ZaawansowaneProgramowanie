@@ -1,5 +1,6 @@
 import cv2
 import configparser
+import numpy as np
 
 config = configparser.ConfigParser()
 try:
@@ -12,9 +13,11 @@ path = config['Paths']['image_path']
 
 image = cv2.imread(path)
 
-h, w, _ = image.shape
+numpy_burned = image + 150
 
-roi = image[h//2:, 0:]
+opencv_burned = cv2.add(image, 150 * np.ones(image.shape, dtype='uint8'))
 
-cv2.imshow("Połowa", roi)
+cv2.imshow("NumPy", numpy_burned)
+cv2.imshow("OpenCV", opencv_burned)
 cv2.waitKey(0)
+cv2.destroyAllWindows()
