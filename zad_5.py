@@ -1,6 +1,6 @@
 import cv2
 import configparser
-from imutils import rotate
+from imutils import resize
 
 config = configparser.ConfigParser()
 try:
@@ -12,10 +12,7 @@ except configparser.Error as e:
 path = config['Paths']['image_path']
 image = cv2.imread(path)
 
-from imutils import rotate
-
-rotated = rotate(image, 180)
-
-cv2.imshow("Obrocony", rotated)
+resized = resize(image, width=500)
+cv2.imshow("Szerokosc", resized)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

@@ -1,5 +1,6 @@
 import cv2
 import configparser
+from imutils import rotate
 
 config = configparser.ConfigParser()
 try:
@@ -10,14 +11,8 @@ except configparser.Error as e:
 
 path = config['Paths']['image_path']
 image = cv2.imread(path)
+half = cv2.resize(image, (image.shape[1]//2, image.shape[0]//2))
 
-h, w, _ = image.shape
-center = (w // 2, h // 2)
-
-M = cv2.getRotationMatrix2D(center, 45, 1.0)
-rotated = cv2.warpAffine(image, M, (w, h))
-
-cv2.imshow("Oryginalny", image)
-cv2.imshow("Obrocony", rotated)
+cv2.imshow("Pomniejszony", half)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

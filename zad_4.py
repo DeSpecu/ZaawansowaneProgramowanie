@@ -1,6 +1,5 @@
 import cv2
 import configparser
-from imutils import translate
 
 config = configparser.ConfigParser()
 try:
@@ -11,13 +10,17 @@ except configparser.Error as e:
 
 path = config['Paths']['image_path']
 image = cv2.imread(path)
-h, w, _ = image.shape
-center = (w // 2, h // 2)
 
-angle = float(input("Podaj kąt obrotu: "))
-M = cv2.getRotationMatrix2D(center, angle, 1.0)
-rotated = cv2.warpAffine(image, M, (w, h))
+methods = {
+    "NEAREST": cv2.INTER_NEAREST,
+    "LINEAR": cv2.INTER_LINEAR,
+    "CUBIC": cv2.INTER_CUBIC,
+    "LANCZOS4": cv2.INTER_LANCZOS4
+}
 
-cv2.imshow("Obrocony", rotated)
+for name, method in methods.items():
+    upscaled = cv2.resize(image, None, fx=3, fy=3, interpolation=method)
+    cv2.imshow(name, upscaled)
+
 cv2.waitKey(0)
 cv2.destroyAllWindows()

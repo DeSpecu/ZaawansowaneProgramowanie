@@ -1,6 +1,6 @@
 import cv2
 import configparser
-from imutils import rotate
+from imutils import resize
 
 config = configparser.ConfigParser()
 try:
@@ -11,13 +11,6 @@ except configparser.Error as e:
 
 path = config['Paths']['image_path']
 image = cv2.imread(path)
-h, w, _ = image.shape
-center = (w // 2, h // 2)
 
-for angle in range(0, 361, 15):
-    M = cv2.getRotationMatrix2D(center, angle, 1.0)
-    rotated = cv2.warpAffine(image, M, (w, h))
-    cv2.imshow(f"Obrót {angle}°", rotated)
-    cv2.waitKey(500)
-
-cv2.destroyAllWindows()
+resized = resize(image, width=800)
+cv2.imwrite("resized.jpg", resized)

@@ -10,12 +10,8 @@ except configparser.Error as e:
 
 path = config['Paths']['image_path']
 image = cv2.imread(path)
-h, w, _ = image.shape
+resized = cv2.resize(image, (200, 300))
 
-corner = (0, 0)
-M = cv2.getRotationMatrix2D(corner, 30, 1.0)
-rotated = cv2.warpAffine(image, M, (w, h))
-
-cv2.imshow("Obrócony", rotated)
+cv2.imshow("200x300", resized)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

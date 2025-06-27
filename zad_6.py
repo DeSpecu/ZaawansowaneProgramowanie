@@ -1,6 +1,6 @@
 import cv2
 import configparser
-from imutils import rotate_bound
+from imutils import resize
 
 config = configparser.ConfigParser()
 try:
@@ -13,8 +13,8 @@ path = config['Paths']['image_path']
 
 image = cv2.imread(path)
 
-rotated = rotate_bound(image, -33)
+resized = resize(image, height=400)
 
-cv2.imshow("Obrócony", rotated)
+cv2.imshow("Wysokosc 400", resized)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

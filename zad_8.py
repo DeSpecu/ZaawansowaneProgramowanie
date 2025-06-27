@@ -1,6 +1,5 @@
 import cv2
 import configparser
-from imutils import rotate
 
 config = configparser.ConfigParser()
 try:
@@ -11,18 +10,10 @@ except configparser.Error as e:
 
 path = config['Paths']['image_path']
 image = cv2.imread(path)
-h, w, _ = image.shape
-center = (w // 2, h // 2)
+cubic = cv2.resize(image, None, fx=4, fy=4, interpolation=cv2.INTER_CUBIC)
+lanczos = cv2.resize(image, None, fx=4, fy=4, interpolation=cv2.INTER_LANCZOS4)
 
-result = image.copy()
-for _ in range(3):
-    M = cv2.getRotationMatrix2D(center, 30, 1.0)
-    result = cv2.warpAffine(result, M, (w, h))
-
-M90 = cv2.getRotationMatrix2D(center, 90, 1.0)
-rot90 = cv2.warpAffine(image, M90, (w, h))
-
-cv2.imshow("3x30", result)
-cv2.imshow("1x90", rot90)
+cv2.imshow("Cubic", cubic)
+cv2.imshow("Lanczos", lanczos)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
